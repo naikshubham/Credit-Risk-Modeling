@@ -46,6 +46,66 @@ plt.ylabel("Loan Interest Rate")
 plt.show()
 ```
 
+### Outliers in Credit Data
+
+#### Data preprocessing
+- In any ML problem, data preparation is the first step. When the data is properly processed we reduce the training time of our ML models.
+
+<p align="center">
+  <img src="images/roc.JPG" width="350" title="ROC curve">
+</p>
+
+- Consider above ROC chart. This shows the accuracy of 3 different models on the same data throughout different stages of processing. The `light blue` line represents the model trained on tidy and prepared data, while the `orange` line's model trained on raw data. The `light blue` line represents the most accurate model, because the curve is closest to the top left corner.
+
+#### Outliers and performance
+- Possible causes of outliers
+1. Problems with data entry systems (human errors)
+2. Issues with data ingestion tools
+
+#### Detecting outliers with cross tables
+- Use cross tables with aggregate functions.
+
+```python
+pd.crosstab(cr_loan['person_home_ownership'], cr_loan['loan_status'],
+        values=cr_loan['loan_int_rate'], aggfunc='mean').round(2)
+```
+
+<p align="center">
+  <img src="images/cross_tabs.JPG" width="350" title="Ouliers">
+</p>
+
+- Detecting outliers visually
+1. Histogram
+2. Scatter plots
+
+#### Removing outliers
+- `.drop()` from pandas can remove rows from our data
+
+```python
+indices = cr_loan[cr_loan['person_emp_length'] >= 60].index
+cr_loan.drop(indices, inplace=True)
+```
+
+- In this example, we first use basic python subsetting to find rows with a person's employment length greater than 60.What this returns is the index position of that row in our dataframe. Then we drop rows whose employment length > 60.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
