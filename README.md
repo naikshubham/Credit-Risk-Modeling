@@ -88,6 +88,86 @@ cr_loan.drop(indices, inplace=True)
 
 - In this example, we first use basic python subsetting to find rows with a person's employment length greater than 60.What this returns is the index position of that row in our dataframe. Then we drop rows whose employment length > 60.
 
+### Risk with missing data in loan data
+- With outliers now removed we can now focus on another problem with credit data and that is when data is missing. One issue with missing data is similar to problems caused bu outliers, in that it can negatively impact predictive model performance.
+- It can bias our model in unanticipated ways, which can affect how we predict defaults.This could result in us predicting large number of defaults that are not actually defaults because the model is biased towards defaults.
+
+#### Handle missing data
+- Generally three ways to handle missing data
+ 1. Replacing a null with the average value of that column.
+ 2. Other times, we remove the row with missing data all together. For .eg. if there are nulls in loan amount, we should drop those rows entirely.
+ 3. Leave the rows with missing data unchanged.This however is not the case with loan data.
+- Understanding the data will direct us towards one of these 3 actions. For e.g,if the loan status is null, it's possible that the loan was recently processed in the system. Sometimes there is a data delay, and additional time needed for processing.In this case, we should just remove the whole row.
+- Another example is where the person's age is missing.Here, we might be able to replace the missing age values with the median of everyone's age.
+
+#### Finding missing data
+- Null values are easily found by using the `isnull()` function.
+- Null records can be easily counted with the `sum()` function.
+- `.any()` method checks all columns
+- By combining the functions isnull, sum and any, we count all the null values in each column.This produces a tables of values that show the count of records with nulls in the data.
+
+```python
+null_columns = cr_loan.columns[cr_loan.isnull().any()]
+cr_loan[null_columns].isnull().sum()
+```
+
+#### Replace missing data
+- We can call the `.fillna()` with aggregate functions and methods.
+
+```python
+cr_loan['loan_int_rate'].fillna((cr_loan['loan_int_rate'].mean()), inplace=True)
+```
+
+- Here, we replace null interest rates with the average of all interest rates in the data.
+
+#### Dropping missing data
+- Uses indices to identify records the same as with outliers.
+- Remove the records entirely using the `.drop()` method.
+
+```python
+indices = cr_loan[cr_loan['person_emp_length'].isnull()].index
+cr_loan.drop(indices, inplace=True)
+```
+
+- Here, we find the rows with missing data using isnull, and then drop the rows from the dataset entirely.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
