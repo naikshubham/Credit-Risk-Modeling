@@ -131,6 +131,44 @@ cr_loan.drop(indices, inplace=True)
 
 - Here, we find the rows with missing data using isnull, and then drop the rows from the dataset entirely.
 
+### Logistic Regression for probability of default
+- Now that we have removed outliers and missing data, we can begin modeling to predict the probabilty of default. The PD is the likelihood that someone will fail to repay a loan. This is expressed as a probability which is a value between zero and one.
+- These probabilities are associated with our loan status column where a 1 is a default, and a 0 is a non default. The resulting predictions give us probabilities of default. The closer the value is to 1, the higher the probability of the loan being a default.
+- To get these probabilities, we train ML models on our credit data columns known as features, so the models learn how to use the data to predict the probabilities. These types of models are known as classification models, where the class is default or non-default.
+- In industry two models are used frequently, these are Logistic Regression and Decision trees. Both of these models can predict the probability of default, and tell us how important each column is for predictions.
+
+#### Logistic regression
+- Similar to linear regression, but only produces a value between 0 and 1.
+
+<p align="center">
+  <img src="images/LR.JPG" width="350" title="Logistic Regression">
+</p>
+
+#### Training a Logistic Regression
+
+```python
+from sklearn.linear_model import LogisticRegression
+
+clf_logistic = LogisticRegression(solver='lbfgs')
+```
+
+- The solver parameter is an optimizer, just like the solver in Excel. LBFGS is the default. To train the model we call the fit method on it. We use ravel from numpy to make the labels a one-dimensional array instead of a dataframe. In our data, the training columns are every column except the loan status.
+
+```python
+clf_logistic.fit(training_columns, np.ravel(training_labels))
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
