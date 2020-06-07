@@ -158,6 +158,32 @@ clf_logistic = LogisticRegression(solver='lbfgs')
 clf_logistic.fit(training_columns, np.ravel(training_labels))
 ```
 
+### Credit Model Performance
+- The easiest way to analyze performance is with accuracy. Accuracy is the number of correct predictions divided by the total number of predictions.
+
+#### ROC curve charts
+- ROC charts are a great way to visualize our model.They plot the `True positive rate (TPR)`, the percentage of correctly predicted defaults, against the `false positive rate`, the percentage of incorrectly predicted defaults. Using the `roc_curve` function in scikit-learn we create these two values and the thresholds all at once. From there, we use the normal line plots to see the results.
+
+```python
+fallout, sensitivity, thresholds = roc_curve(y_test, prob_default)
+plt.plot(fallout, sensitivity, color='darkorange')
+```
+
+#### Analyzing ROC charts
+- Area Under Curve(AUC) : area between curve and random prediction
+
+<p align="center">
+  <img src="images/ROC_chart.JPG" width="350" title="ROC">
+</p>
+
+- The dotted blue line represents a random prediction and the orange line represents our model's predictions. ROC charts are interpreted by looking at how far away the model's curve gets from the dotted blue line shown here, which represents the random predictions. 
+- **This movement away from the line is called lift**. The more lift we have, the larger the area under the curve gets.
+- The **AUC** is the calculated area between the curve and the random prediction.
+
+
+
+
+
 
 
 
