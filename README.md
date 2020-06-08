@@ -178,7 +178,93 @@ plt.plot(fallout, sensitivity, color='darkorange')
 
 - The dotted blue line represents a random prediction and the orange line represents our model's predictions. ROC charts are interpreted by looking at how far away the model's curve gets from the dotted blue line shown here, which represents the random predictions. 
 - **This movement away from the line is called lift**. The more lift we have, the larger the area under the curve gets.
-- The **AUC** is the calculated area between the curve and the random prediction.
+- The **AUC** is the calculated area between the curve and the random prediction. This is a direct indicator of how well our model makes predictions.
+
+#### Default(Class 1) thresholds
+- To analyze performance further, we need to decide what probability range is a default, and what is a non-default.
+
+<p align="center">
+  <img src="images/default.JPG" width="350" title="Default thresholds">
+</p>
+
+- Let's say, if any probability over 0.5 is default, and anything below that is a non-default. What this means is that we will assign a new loan_status to these loans based on their probability of default and the threshold. Once we have this, we can further check the model's performance.
+
+#### Setting the threshold
+- Once the threshold is defined we need to relabel our loans based on that threshold. For that, we will first need to create a variable to store the predicted probabilities. Then we can create a data frame from the second column which contains the probabilities of default. Then we apply a quick function to assign a value of 1 if the probability of default is above our threshold of 0.5. 
+
+```python
+preds = clf_logistic.predict_proba(X_test)
+preds_df = pd.DataFrame(preds[:,1], columns = ['prob_default'])
+preds_df['loan_status'] = preds_df['prob_default'].apply(lambda x:1 if x>0.5 else 0)
+```
+
+#### Credit classification reports
+- Another really useful function for evaluating our models is the classification report function within sckit-learn. This shows several different evaluation metrics all at once. There are two useful metrics, precision and recall.
+
+```python
+from sklearn.metrics import classification_report
+classification_report(y_test, preds_df['loan_status'], target_names=target_names)
+```
+
+#### Selecting classification metrics
+- Select and store components from the `classification_report()`. Use the `precision_recall_fscore_support()` function from scikit-learn.
+
+```python
+from sklearn.metrics import precision_recall_fscore_support
+precision_recall_fscore_support(y_test, preds_df['loan_status'])[1][1]
+```
+
+### Model discrimination and impact
+- Another way to analyze our model's performance is with the confusion matrix. This will show us all of the correct and incorrect predictions for loan_status.
+
+#### Default recall for loan status
+- The definition of default recall, also called sensitivity, is the proportion of actual positives correctly predicted.
+
+<p align="center">
+  <img src="images/recall.JPG" width="350" title="Recall">
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
